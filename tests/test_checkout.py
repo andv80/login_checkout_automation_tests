@@ -7,6 +7,7 @@ from pages.checkout_overview_page import CheckoutOverview
 
 @pytest.mark.usefixtures("browser")
 class TestProducts:
+    @pytest.mark.dependency()
     @pytest.mark.usefixtures("login_as_standard_user")
     def test_add_some_items_to_cart(self):
         """this test validates that some items can be added to the cart
@@ -36,7 +37,7 @@ class TestProducts:
         cart_page.submit_cart_page()
         assert cart_page.cart_page_is_submitted()
 
-    @pytest.mark.depends(on=['test_add_some_items_to_cart'])
+    @pytest.mark.dependency(depends=["test_add_some_items_to_cart"])
     def test_fill_in_checkout_form(self):
         """this test validates checkout form is presented
         user can fill in submission form and proceed to the checkout overview page"""
@@ -46,7 +47,7 @@ class TestProducts:
         checkout_page.submit_checkout_form()
         assert checkout_page.checkout_page_is_submitted()
 
-    @pytest.mark.depends(on=['test_fill_in_checkout_form'])
+    @pytest.mark.dependency(depends=["test_fill_in_checkout_form"])
     def test_complete_checkout(self):
         """this test validates that total amount is valid
         that page can be submitted successfully"""
